@@ -36,13 +36,13 @@ public class HotelController {
     }
 
     @PostMapping("/create")
-    public Hotel create(@RequestBody Hotel aluno) {
-        return hotelRepository.save(aluno);
+    public Hotel create(@RequestBody Hotel hotel) {
+        return hotelRepository.save(hotel);
     }
 
     @PutMapping("/edit")
-    public Hotel edit(@RequestBody Hotel aluno) {
-        return hotelRepository.save(aluno);
+    public Hotel edit(@RequestBody Hotel hotel) {
+        return hotelRepository.save(hotel);
     }
 
     @DeleteMapping("/delete/{id}")
