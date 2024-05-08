@@ -1,29 +1,60 @@
 package com.hoteljpj.controller;
 
-import com.hoteljpj.service.HotelService;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import com.hoteljpj.model.entity.Hotel;
+import com.hoteljpj.model.repository.HotelRepository;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/api/hotel")
 public class HotelController {
-    private final HotelService hotelService;
 
-    public HotelController(HotelService hotelService) {
-        this.hotelService = hotelService;
+    @Autowired
+    private HotelRepository hotelRepository;
+
+    @GetMapping("/ola")
+    public String ola(){
+        return "Olá mundo";
     }
 
-    @GetMapping("{id}")
-    public ResponseEntity findById(@PathVariable("id") Long id) {
-        try {
-            return ResponseEntity.ok(HotelService.findById(id));
-        } catch (Exception e) {
-            return new ResponseEntity(e.getMessage(), HttpStatus.NOT_FOUND);
-        }
+    @GetMapping("/list")
+    public List<Hotel> list(){
+        return hotelRepository.findAll();
     }
 
-}
+    @GetMapping("/getById/{id}")
+    public Optional<Hotel> getById(@PathVariable("id") long id) {
+        return hotelRepository.findById(id);
+    }
+
+    @GetMapping("/total")
+    public Long getTotal() {
+        return hotelRepository.count();
+    }
+
+    @PostMapping("/create")
+    public Hotel create(@RequestBody Hotel aluno) {
+        return hotelRepository.save(aluno);
+    }
+
+    @PutMapping("/edit")
+    public Hotel edit(@RequestBody Hotel aluno) {
+        return hotelRepository.save(aluno);
+    }
+
+    @DeleteMapping("/delete/{id}")
+    public Hotel delete(@PathVariable("id") long id) {
+        Optional<Hotel> hotelemover = hotelRepository.findById(id);
+        if (!hotelemover.isPresent()) return null;
+
+        hotelRepository.delete(hotelemover.get());
+        return hotelemover.get();
+
+
+    }
+    }
+
+

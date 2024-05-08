@@ -3,7 +3,6 @@ package com.hoteljpj.model.entity;
 import jakarta.persistence.*;
 import org.springframework.format.annotation.DateTimeFormat;
 
-import javax.xml.crypto.Data;
 import java.util.Date;
 
 @Entity
