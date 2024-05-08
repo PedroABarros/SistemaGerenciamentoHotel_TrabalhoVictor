@@ -13,11 +13,11 @@ public class Hotel {
     private Long id;
     private String nome;
     private String endereco;
-    private Double wifi;
-    private Double estacionamento;
-    private Double cafe;
-    private Double almoco;
-    private Double janta;
+    private Boolean wifi;
+    private Boolean estacionamento;
+    private Boolean cafe;
+    private Boolean almoco;
+    private Boolean janta;
     private Integer classificacao;
     private Integer qtdQuartos;
     @DateTimeFormat(pattern = "dd/MM/yyyy")
@@ -56,43 +56,43 @@ public class Hotel {
         this.endereco = endereco;
     }
 
-    public Double getWifi() {
+    public Boolean getWifi() {
         return wifi;
     }
 
-    public void setWifi(Double wifi) {
+    public void setWifi(Boolean wifi) {
         this.wifi = wifi;
     }
 
-    public Double getEstacionamento() {
+    public Boolean getEstacionamento() {
         return estacionamento;
     }
 
-    public void setEstacionamento(Double estacionamento) {
+    public void setEstacionamento(Boolean estacionamento) {
         this.estacionamento = estacionamento;
     }
 
-    public Double getCafe() {
+    public Boolean getCafe() {
         return cafe;
     }
 
-    public void setCafe(Double cafe) {
+    public void setCafe(Boolean cafe) {
         this.cafe = cafe;
     }
 
-    public Double getAlmoco() {
+    public Boolean getAlmoco() {
         return almoco;
     }
 
-    public void setAlmoco(Double almoco) {
+    public void setAlmoco(Boolean almoco) {
         this.almoco = almoco;
     }
 
-    public Double getJanta() {
+    public Boolean getJanta() {
         return janta;
     }
 
-    public void setJanta(Double janta) {
+    public void setJanta(Boolean janta) {
         this.janta = janta;
     }
 

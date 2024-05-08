@@ -1,7 +1,5 @@
 package com.hoteljpj.controller;
 
-
-import com.hoteljpj.model.entity.Hotel;
 import com.hoteljpj.model.entity.Quarto;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
