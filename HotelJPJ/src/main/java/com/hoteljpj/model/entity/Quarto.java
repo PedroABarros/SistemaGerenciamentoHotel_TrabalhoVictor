@@ -9,12 +9,18 @@ public class Quarto {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
+    @ManyToOne
+    @JoinColumn(name = "hotel_id")
+    private Hotel hotel;
+
     private String indentificacao;
+
     private String status;
     private String tipoCama;
     private int quantidadeLeito;
     private double preco;
-    private double vista;
+    private Boolean vista;
     private String comodidades;
     private String descricao;
 
@@ -24,6 +30,14 @@ public class Quarto {
 
     public void setId(Long id) {
         this.id = id;
+    }
+
+    public Hotel getHotel() {
+        return hotel;
+    }
+
+    public void setHotel(Hotel hotel) {
+        this.hotel = hotel;
     }
 
     public String getIndentificacao() {
@@ -66,11 +80,11 @@ public class Quarto {
         this.preco = preco;
     }
 
-    public double getVista() {
+    public Boolean getVista() {
         return vista;
     }
 
-    public void setVista(double vista) {
+    public void setVista(Boolean vista) {
         this.vista = vista;
     }
 
