@@ -1,6 +1,5 @@
 package com.hoteljpj.controller;
 
-import com.hoteljpj.model.entity.Hotel;
 import com.hoteljpj.model.entity.Quarto;
 import com.hoteljpj.model.repository.HotelRepository;
 import com.hoteljpj.service.QuartoService;
@@ -12,8 +11,6 @@ import com.hoteljpj.model.repository.QuartoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
-import java.util.Optional;
 @RestController
 @RequestMapping("/api/quarto")
 public class QuartoController {
@@ -37,10 +34,12 @@ public class QuartoController {
             return ResponseEntity.badRequest().body(e.getMessage());
         }
     }
-    @PutMapping("/{quartoId}")
-    public ResponseEntity<String> editar(@PathVariable Long hotelId, @RequestBody Quarto quarto) {
+
+
+    @PutMapping("/{id}")
+    public ResponseEntity<String> editar(@RequestBody Quarto id) {
         try {
-            quartoService.save(hotelId, quarto);
+            quartoService.edit(id);
 
             return ResponseEntity.ok("Quarto editado com sucesso");
         } catch (IllegalArgumentException e) {
@@ -63,24 +62,19 @@ public class QuartoController {
         }
     }
 
-    @GetMapping("/getById/{id}")
-    public Optional<Quarto> getById(@PathVariable("id") long id) {
-        return quartoRepository.findById(id);
-    }
-
-
     @GetMapping()
     public ResponseEntity findAll() {
         return ResponseEntity.ok(quartoService.findAll());
     }
 
-    @DeleteMapping("/delete/{id}")
-    public Quarto delete(@PathVariable("id") long id) {
-        Optional<Quarto> quartoemover = quartoRepository.findById(id);
-        if (!quartoemover.isPresent()) return null;
+    @DeleteMapping("/{id}")
+    public ResponseEntity delete(@PathVariable("id") long id) {
 
-        quartoRepository.delete(quartoemover.get());
-        return quartoemover.get();
+        try {
+            return ResponseEntity.ok(quartoService.delete(id));
+        } catch (Exception e) {
+            return new ResponseEntity(e.getMessage(), HttpStatus.NOT_FOUND);
+        }
     }
 
 }

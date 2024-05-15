@@ -1,8 +1,13 @@
 package com.hoteljpj.service;
 
 import com.hoteljpj.model.entity.Hotel;
+import com.hoteljpj.model.entity.Quarto;
 import com.hoteljpj.model.repository.HotelRepository;
+import com.hoteljpj.model.repository.QuartoRepository;
+import org.jetbrains.annotations.NotNull;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
 import java.util.Date;
@@ -11,7 +16,9 @@ import java.util.Optional;
 
 @Service
 public class HotelService {
-
+    @Autowired
+    private QuartoRepository quartoRepository;
+    @Autowired
     private HotelRepository hotelRepository;
 
     public HotelService(HotelRepository hotelRepository) {
@@ -30,46 +37,57 @@ public class HotelService {
         return hotel.get();
     }
 
-    public Hotel save(Hotel hotel) throws Exception {
+    public Hotel save(@NotNull Hotel hotel) throws Exception {
         if (hotel.getClassificacao() == null || hotel.getClassificacao() > 5 || hotel.getClassificacao() < 0) {
             throw new Exception("Classificação não pode ser menor que 0 ou maior que 5");
         }
         if (hotel.getNome() == null || hotel.getNome().length() < 3) {
             throw new Exception("Nome deve ter pelo menos 3 caracteres.");
         }
-        // TESTAR NA FACULDADE
-        // O DA DATA EU ACHO Q VAI DAR ERRADO
-        if (hotel.getQtdQuartos() <= 0 || hotel.getQtdQuartos() == null){
-            throw new Exception("Quantidade Quartos não pode ser menor que 1 ou nulo");
-        }
+
         Date hoje = new Date();
-        if (hotel.getDataFundacao().before(hoje)) {
-            throw new IllegalStateException("A DataFundacao do Hotel não pode ser menor que a data do dia do cadastro");
+        if (!hotel.getDataFundacao().before(hoje)) {
+            throw new IllegalStateException("A DataFundacao do Hotel não pode ser maior que a data do dia do cadastro");
         }
         if (hotel.getCafe() == null) {
             throw new Exception("Cafe do Hotel não pode ser nulo.");
         }
-
         if (hotel.getAlmoco() == null) {
             throw new Exception("Almoco do Hotel não pode ser nulo.");
         }
-
         if (hotel.getJanta() == null) {
             throw new Exception("Janta do Hotel não pode ser nula.");
         }
 
-        return hotelRepository.save(hotel);
+        if (hotel.getId() != null) {
+            // Hotel já existe no banco de dados, verificar se é uma atualização
+            Optional<Hotel> existingHotel = hotelRepository.findById(hotel.getId());
+            if (!existingHotel.isPresent()) {
+                throw new Exception("Hotel não encontrado para atualização.");
+            }
+            return hotelRepository.save(hotel);
+        } else {
+            // Hotel não possui ID, é uma inserção
+            return hotelRepository.save(hotel);
+        }
     }
 
-    public Hotel delete(Long id) throws Exception {
-        Optional<Hotel> hotel = hotelRepository.findById(id);
 
-        if (!hotel.isPresent()) {
-            throw new Exception("Hotel não encontrado");
+    @Transactional
+    public void deleteHotel(Long hotelId) {
+        // Verifique se o hotel existe
+        if (!hotelRepository.existsById(hotelId)) {
+            throw new IllegalArgumentException("Hotel não encontrado");
         }
 
-        hotelRepository.delete(hotel.get());
-        return hotel.get();
+        // Verifique se há quartos associados
+        List<Quarto> quartos = quartoRepository.findByHotelId(hotelId);
+        if (!quartos.isEmpty()) {
+            throw new IllegalStateException("Não é possível excluir o hotel pois ele ainda possui quartos associados.");
+        }
+
+        // Exclua o hotel
+        hotelRepository.deleteById(hotelId);
     }
 
     public Long count() {
@@ -77,10 +95,3 @@ public class HotelService {
     }
 
 }
-//   JEAN E PEDRO, ESSE CODIGO AQUI E SÓ PRA LEMBRA DE COLOCAR NO QUARTO,
-//   PARA VERIFICA SE ELE TA COMEÇANDO COM LETRA QUE NEM NAS RF
-//
-//                  Nova validação para Identificacao do Quarto
-//            if (hotel.getId() == null || !hotel.getIdentificacao().matches("^[a-zA-Z]\\d{4,}$")) {
-//                throw new Exception("A Identificacao do Quarto deve conter no mínimo 5 dígitos, começando com uma letra.");
-//            }

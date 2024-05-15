@@ -1,9 +1,11 @@
 package com.hoteljpj.model.entity;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import java.util.Date;
+import java.util.List;
 
 @Entity
 @Table(name = "hotel")
@@ -19,7 +21,11 @@ public class Hotel {
     private Boolean almoco;
     private Boolean janta;
     private Integer classificacao;
-    private Integer qtdQuartos;
+
+    @OneToMany(mappedBy = "hotel", cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonManagedReference
+    private List<Quarto> qtdQuartos;
+
     @DateTimeFormat(pattern = "dd/MM/yyyy")
     private Date dataFundacao;
 
@@ -104,11 +110,11 @@ public class Hotel {
         this.classificacao = classificacao;
     }
 
-    public Integer getQtdQuartos() {
+    public List<Quarto> getQtdQuartos() {
         return qtdQuartos;
     }
 
-    public void setQtdQuartos(Integer qtdQuartos) {
+    public void setQtdQuartos(List<Quarto> qtdQuartos) {
         this.qtdQuartos = qtdQuartos;
     }
 }

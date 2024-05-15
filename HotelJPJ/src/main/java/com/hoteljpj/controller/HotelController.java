@@ -49,12 +49,20 @@ public class HotelController {
         }
     }
 
-    @PutMapping()
-    public ResponseEntity edit(@RequestBody Hotel hotel) {
+    @PutMapping("/{id}")
+    public ResponseEntity<Hotel> edit(@PathVariable Long id, @RequestBody Hotel hotel) {
         try {
-            return ResponseEntity.ok(hotelService.save(hotel));
+            // Verificar se o hotel com o ID especificado existe
+            if (!hotelRepository.existsById(id)) {
+                return ResponseEntity.notFound().build();
+            }
+
+            // Configurar o ID do hotel e realizar a atualização
+            hotel.setId(id);
+            Hotel updated = hotelService.save(hotel);
+            return ResponseEntity.ok(updated);
         } catch (Exception e) {
-            return ResponseEntity.badRequest().body(e.getMessage());
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
         }
     }
 
@@ -64,7 +72,6 @@ public class HotelController {
     // UMA LISTA COM OS HOTEIS CADASTRADO
     // EX: GET
     //     http://localhost:8080/api/hotel/1
-
     @GetMapping("{id}")
     public ResponseEntity findById(@PathVariable("id") Long id) {
         try {
@@ -85,12 +92,17 @@ public class HotelController {
     // VAI DELETAR OS OBJETOS
     // EX: DELETE
     //     http://localhost:8080/api/hotel
-    @DeleteMapping("{id}")
-    public ResponseEntity delete(@PathVariable("id") Long id) {
+    @DeleteMapping("/{id}")
+    public ResponseEntity<String> delete(@PathVariable Long id) {
         try {
-            return ResponseEntity.ok(hotelService.delete(id));
+            hotelService.deleteHotel(id);
+            return ResponseEntity.ok("Hotel excluído com sucesso.");
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
+        } catch (IllegalStateException e) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
         } catch (Exception e) {
-            return new ResponseEntity(e.getMessage(), HttpStatus.NOT_FOUND);
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Ocorreu um erro ao tentar excluir o hotel.");
         }
     }
     // APENAS RETORNA O NUMERO TOTAL DE HOTEIS

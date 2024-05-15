@@ -22,7 +22,8 @@ public class QuartoService {
         this.quartoRepository = quartoRepository;
         this.hotelRepository = hotelRepository;
     }
-        public List<Quarto> findAll() {
+
+    public List<Quarto> findAll() {
         return quartoRepository.findAll();
     }
 
@@ -38,19 +39,21 @@ public class QuartoService {
         Optional<Quarto> quarto = quartoRepository.findById(id);
 
         if (!quarto.isPresent()) {
-            throw new Exception("Hotel não encontrado");
+            throw new Exception("Quarto não encontrado");
         }
 
        quartoRepository.delete(quarto.get());
         return quarto.get();
     }
-    //   JEAN E PEDRO, ESSE CODIGO AQUI E SÓ PRA LEMBRA DE COLOCAR NO QUARTO,
+//   JEAN E PEDRO, ESSE CODIGO AQUI E SÓ PRA LEMBRA DE COLOCAR NO QUARTO,
 //   PARA VERIFICA SE ELE TA COMEÇANDO COM LETRA QUE NEM NAS RF
 //
 //                  Nova validação para Identificacao do Quarto
 //            if (hotel.getId() == null || !hotel.getIdentificacao().matches("^[a-zA-Z]\\d{4,}$")) {
 //                throw new Exception("A Identificacao do Quarto deve conter no mínimo 5 dígitos, começando com uma letra.");
 //            }
+
+
     public void save(Long hotelId, Quarto quarto) {
         Optional<Hotel> optionalHotel = hotelRepository.findById(hotelId);
         if (optionalHotel.isPresent()) {
@@ -70,4 +73,20 @@ public class QuartoService {
         }
     }
 
+    public void edit(Quarto quarto) {
+        if (quarto.getId() == null) {
+            throw new IllegalArgumentException("ID do quarto não pode ser nulo para atualização");
+        }
+
+        Optional<Quarto> existingQuarto = quartoRepository.findById(quarto.getId());
+        if (existingQuarto.isPresent()) {
+            try {
+                quartoRepository.save(quarto);
+            } catch (Exception e) {
+                throw new RuntimeException("Falha ao atualizar o quarto", e);
+            }
+        } else {
+            throw new IllegalArgumentException("Quarto não encontrado para o ID: " + quarto.getId());
+        }
+    }
 }
