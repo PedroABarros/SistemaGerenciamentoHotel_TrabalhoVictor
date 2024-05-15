@@ -7,6 +7,8 @@ import com.hoteljpj.model.repository.QuartoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.Date;
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -20,8 +22,36 @@ public class QuartoService {
         this.quartoRepository = quartoRepository;
         this.hotelRepository = hotelRepository;
     }
+        public List<Quarto> findAll() {
+        return quartoRepository.findAll();
+    }
 
-    public void criarQuarto(Long hotelId, Quarto quarto) {
+    public Quarto findById(Long id) throws Exception {
+        Optional<Quarto> quarto = quartoRepository.findById(id);
+        if (!quarto.isPresent()) {
+            throw new Exception("Quarto não encontrado");
+        }
+        return quarto.get();
+    }
+
+    public Quarto delete(Long id) throws Exception {
+        Optional<Quarto> quarto = quartoRepository.findById(id);
+
+        if (!quarto.isPresent()) {
+            throw new Exception("Hotel não encontrado");
+        }
+
+       quartoRepository.delete(quarto.get());
+        return quarto.get();
+    }
+    //   JEAN E PEDRO, ESSE CODIGO AQUI E SÓ PRA LEMBRA DE COLOCAR NO QUARTO,
+//   PARA VERIFICA SE ELE TA COMEÇANDO COM LETRA QUE NEM NAS RF
+//
+//                  Nova validação para Identificacao do Quarto
+//            if (hotel.getId() == null || !hotel.getIdentificacao().matches("^[a-zA-Z]\\d{4,}$")) {
+//                throw new Exception("A Identificacao do Quarto deve conter no mínimo 5 dígitos, começando com uma letra.");
+//            }
+    public void save(Long hotelId, Quarto quarto) {
         Optional<Hotel> optionalHotel = hotelRepository.findById(hotelId);
         if (optionalHotel.isPresent()) {
             Hotel hotel = optionalHotel.get();

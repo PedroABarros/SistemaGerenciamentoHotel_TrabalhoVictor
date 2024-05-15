@@ -23,11 +23,11 @@ public class HotelService {
     }
 
     public Hotel findById(Long id) throws Exception {
-        Optional<Hotel> aluno = hotelRepository.findById(id);
-        if (!aluno.isPresent()) {
-            throw new Exception("Aluno não encontrado");
+        Optional<Hotel> hotel = hotelRepository.findById(id);
+        if (!hotel.isPresent()) {
+            throw new Exception("Hotel não encontrado");
         }
-        return aluno.get();
+        return hotel.get();
     }
 
     public Hotel save(Hotel hotel) throws Exception {
@@ -62,14 +62,14 @@ public class HotelService {
     }
 
     public Hotel delete(Long id) throws Exception {
-        Optional<Hotel> aluno = hotelRepository.findById(id);
+        Optional<Hotel> hotel = hotelRepository.findById(id);
 
-        if (!aluno.isPresent()) {
-            throw new Exception("Aluno não encontrado");
+        if (!hotel.isPresent()) {
+            throw new Exception("Hotel não encontrado");
         }
 
-        hotelRepository.delete(aluno.get());
-        return aluno.get();
+        hotelRepository.delete(hotel.get());
+        return hotel.get();
     }
 
     public Long count() {
