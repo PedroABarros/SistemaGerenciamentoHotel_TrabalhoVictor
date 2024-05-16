@@ -16,16 +16,15 @@ public class Quarto {
     @JsonBackReference
     private Hotel hotel;
 
-    private String indentificacao;
-
+    private String identificacao;
+    private double tamanho;
     private String status;
     private String tipoCama;
     private int quantidadeLeito;
     private double preco;
-    private Boolean vista;
+    private String vista;
     private String comodidades;
     private String descricao;
-
     public Long getId() {
         return id;
     }
@@ -42,12 +41,20 @@ public class Quarto {
         this.hotel = hotel;
     }
 
-    public String getIndentificacao() {
-        return indentificacao;
+    public double getTamanho() {
+        return tamanho;
     }
 
-    public void setIndentificacao(String indentificacao) {
-        this.indentificacao = indentificacao;
+    public void setTamanho(double tamanho) {
+        this.tamanho = tamanho;
+    }
+
+    public String getIdentificacao() {
+        return identificacao;
+    }
+
+    public void setIdentificacao(String indentificacao) {
+        this.identificacao = indentificacao;
     }
 
     public String getStatus() {
@@ -82,11 +89,11 @@ public class Quarto {
         this.preco = preco;
     }
 
-    public Boolean getVista() {
+    public String getVista() {
         return vista;
     }
 
-    public void setVista(Boolean vista) {
+    public void setVista(String vista) {
         this.vista = vista;
     }
 

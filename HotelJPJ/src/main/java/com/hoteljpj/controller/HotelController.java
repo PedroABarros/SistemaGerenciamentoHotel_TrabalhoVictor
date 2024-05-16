@@ -52,12 +52,10 @@ public class HotelController {
     @PutMapping("/{id}")
     public ResponseEntity<Hotel> edit(@PathVariable Long id, @RequestBody Hotel hotel) {
         try {
-            // Verificar se o hotel com o ID especificado existe
             if (!hotelRepository.existsById(id)) {
                 return ResponseEntity.notFound().build();
             }
 
-            // Configurar o ID do hotel e realizar a atualização
             hotel.setId(id);
             Hotel updated = hotelService.save(hotel);
             return ResponseEntity.ok(updated);

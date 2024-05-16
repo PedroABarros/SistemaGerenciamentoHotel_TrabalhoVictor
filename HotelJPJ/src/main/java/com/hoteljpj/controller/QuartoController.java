@@ -24,13 +24,11 @@ public class QuartoController {
     private HotelRepository hotelRepository;
 
     @PostMapping("/{hotelId}")
-    public ResponseEntity<String> save(@PathVariable Long hotelId, @RequestBody Quarto quarto) {
+    public Object save(@PathVariable Long hotelId, @RequestBody Quarto quarto) {
         try {
-            quartoService.save(hotelId, quarto);
-
-            return ResponseEntity.ok("Quarto associado ao hotel com sucesso");
+            Quarto createdQuarto = quartoService.save(hotelId, quarto);
+            return ResponseEntity.ok(createdQuarto);
         } catch (IllegalArgumentException e) {
-
             return ResponseEntity.badRequest().body(e.getMessage());
         }
     }
@@ -48,10 +46,6 @@ public class QuartoController {
         }
     }
 
-    @GetMapping("/ola")
-    public String ola(){
-        return "Olá mundo";
-    }
 
     @GetMapping("{id}")
     public ResponseEntity findById(@PathVariable("id") Long id) {

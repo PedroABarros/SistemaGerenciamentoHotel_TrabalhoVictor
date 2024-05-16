@@ -8,8 +8,6 @@ import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
-import java.time.LocalDate;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
@@ -43,6 +41,8 @@ public class HotelService {
         }
         if (hotel.getNome() == null || hotel.getNome().length() < 3) {
             throw new Exception("Nome deve ter pelo menos 3 caracteres.");
+        } else if (hotelRepository.existsByNome(hotel.getNome())) {
+            throw new IllegalArgumentException("O nome do hotel deve ser único");
         }
 
         Date hoje = new Date();
@@ -60,14 +60,15 @@ public class HotelService {
         }
 
         if (hotel.getId() != null) {
-            // Hotel já existe no banco de dados, verificar se é uma atualização
+
             Optional<Hotel> existingHotel = hotelRepository.findById(hotel.getId());
+
             if (!existingHotel.isPresent()) {
                 throw new Exception("Hotel não encontrado para atualização.");
             }
+
             return hotelRepository.save(hotel);
         } else {
-            // Hotel não possui ID, é uma inserção
             return hotelRepository.save(hotel);
         }
     }
@@ -75,18 +76,15 @@ public class HotelService {
 
     @Transactional
     public void deleteHotel(Long hotelId) {
-        // Verifique se o hotel existe
         if (!hotelRepository.existsById(hotelId)) {
             throw new IllegalArgumentException("Hotel não encontrado");
         }
 
-        // Verifique se há quartos associados
         List<Quarto> quartos = quartoRepository.findByHotelId(hotelId);
         if (!quartos.isEmpty()) {
             throw new IllegalStateException("Não é possível excluir o hotel pois ele ainda possui quartos associados.");
         }
 
-        // Exclua o hotel
         hotelRepository.deleteById(hotelId);
     }
 
