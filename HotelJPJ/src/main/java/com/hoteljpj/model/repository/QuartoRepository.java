@@ -9,5 +9,5 @@ import java.util.Optional;
 
 public interface QuartoRepository extends JpaRepository<Quarto, Long> {
     List<Quarto> findByHotelId(Long hotelId);
-    boolean existsByHotelAndIdentificacao(Optional<Hotel> hotel, String indentificacao);
+
 }

@@ -23,10 +23,10 @@ public class QuartoController {
     @Autowired
     private HotelRepository hotelRepository;
 
-    @PostMapping("/{hotelId}")
-    public Object save(@PathVariable Long hotelId, @RequestBody Quarto quarto) {
+    @PostMapping
+    public Object save(@RequestBody Quarto quarto) {
         try {
-            Quarto createdQuarto = quartoService.save(hotelId, quarto);
+            Quarto createdQuarto = quartoService.save(quarto);
             return ResponseEntity.ok(createdQuarto);
         } catch (IllegalArgumentException e) {
             return ResponseEntity.badRequest().body(e.getMessage());
@@ -34,10 +34,10 @@ public class QuartoController {
     }
 
 
-    @PutMapping("/{id}")
+    @PutMapping
     public ResponseEntity<String> editar(@RequestBody Quarto id) {
         try {
-            quartoService.edit(id);
+            quartoService.save(id);
 
             return ResponseEntity.ok("Quarto editado com sucesso");
         } catch (IllegalArgumentException e) {
@@ -45,7 +45,6 @@ public class QuartoController {
             return ResponseEntity.badRequest().body(e.getMessage());
         }
     }
-
 
     @GetMapping("{id}")
     public ResponseEntity findById(@PathVariable("id") Long id) {

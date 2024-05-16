@@ -43,70 +43,49 @@ public class QuartoService {
         return quarto.get();
     }
 
-    public Quarto save(Long hotelId, Quarto quarto) {
-        if (hotelRepository.findById(hotelId).isPresent()) {
+    public Quarto save(Quarto quarto) {
 
-            // identificação
-            if (quartoRepository.existsByHotelAndIdentificacao(hotelRepository.findById(hotelId), quarto.getIdentificacao())) {
-                throw new IllegalArgumentException("Já existe um quarto com essa identificação para o hotel");
-            }
-            if (quarto.getIdentificacao() == null){
-                throw new IllegalArgumentException("A Identificacao do Quarto esta NULA.");
-            }
-            if (!quarto.getIdentificacao().matches("^[a-zA-Z]\\d{4,}$")) {
-                throw new IllegalArgumentException("A Identificacao do Quarto deve conter no mínimo 5 dígitos, começando com uma letra.");
-            }
-            // vista
-            if (quarto.getVista() == null || quarto.getVista().trim().isEmpty()) {
-                throw new IllegalArgumentException("A vista do quarto não pode ser vazia");
-            } else if (quarto.getVista().length() > 100) {
-                throw new IllegalArgumentException("A vista do quarto não pode ter mais de 100 caracteres");
-            }
-            // comodidades
-            if (quarto.getComodidades() == null || quarto.getComodidades().trim().isEmpty()) {
-                throw new IllegalArgumentException("A vista do quarto não pode ser vazia");
-            } else if (quarto.getComodidades().length() > 100) {
-                throw new IllegalArgumentException("A vista do quarto não pode ter mais de 100 caracteres");
-            }
-            // comodidades
-            if (quarto.getDescricao() == null || quarto.getDescricao().trim().isEmpty()) {
-                throw new IllegalArgumentException("A vista do quarto não pode ser vazia");
-            } else if (quarto.getDescricao().length() > 500) {
-                throw new IllegalArgumentException("A vista do quarto não pode ter mais de 100 caracteres");
-            }
 
-            // Tamanho
-            if (quarto.getTamanho() <= 0) {
-                throw new IllegalArgumentException("O tamanho do quarto deve ser maior do que 0");
-            }
-
-            quarto.setHotel(hotelRepository.findById(hotelId).get());
-
-            try {
-                return quartoRepository.save(quarto);
-
-            } catch (Exception e) {
-                throw new RuntimeException("Falha ao salvar o quarto", e);
-            }
-        }else {
-            throw new IllegalArgumentException("Hotel não encontrado para o ID: " + hotelId);
+        // identificação
+        if (quarto.getIdentificacao() == null){
+            throw new IllegalArgumentException("A Identificacao do Quarto esta NULA.");
         }
-    }
-
-    public void edit(Quarto quarto) {
-        if (hotelRepository.findById(quarto.getId()).isPresent()) {
-
-            try {
-                quartoRepository.save(quarto);
-
-            } catch (Exception e) {
-
-                throw new RuntimeException("Falha ao atualizar o quarto", e);
-
-            }
-
-        } else {
-            throw new IllegalArgumentException("Quarto não editado para o ID: " + quarto.getId());
+        if (!quarto.getIdentificacao().matches("^[a-zA-Z]\\d{4,}$") || quarto.getIdentificacao().length() > 5) {
+            throw new IllegalArgumentException("A Identificacao do Quarto deve conter no mínimo 5 dígitos, começando com uma letra.");
         }
-    }
+        // vista
+        if (quarto.getVista() == null || quarto.getVista().trim().isEmpty()) {
+            throw new IllegalArgumentException("A vista do quarto não pode ser vazia");
+        } else if (quarto.getVista().length() > 100) {
+            throw new IllegalArgumentException("A vista do quarto não pode ter mais de 100 caracteres");
+        }
+        // comodidades
+        if (quarto.getComodidades() == null || quarto.getComodidades().trim().isEmpty()) {
+            throw new IllegalArgumentException("A vista do quarto não pode ser vazia");
+        } else if (quarto.getComodidades().length() > 100) {
+            throw new IllegalArgumentException("A vista do quarto não pode ter mais de 100 caracteres");
+        }
+        // comodidades
+        if (quarto.getDescricao() == null || quarto.getDescricao().trim().isEmpty()) {
+            throw new IllegalArgumentException("A vista do quarto não pode ser vazia");
+        } else if (quarto.getDescricao().length() > 500) {
+            throw new IllegalArgumentException("A vista do quarto não pode ter mais de 100 caracteres");
+        }
+
+        // Tamanho
+        if (quarto.getTamanho() <= 0) {
+            throw new IllegalArgumentException("O tamanho do quarto deve ser maior do que 0");
+        }
+
+        try {
+            return quartoRepository.save(quarto);
+
+        } catch (Exception e) {
+            throw new RuntimeException("Falha ao salvar o quarto", e);
+        }
+
+        }
+
+
 }
+

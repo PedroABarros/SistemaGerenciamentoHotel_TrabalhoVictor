@@ -10,12 +10,6 @@ public class Quarto {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-
-    @ManyToOne
-    @JoinColumn(name = "hotel_id")
-    @JsonBackReference
-    private Hotel hotel;
-
     private String identificacao;
     private double tamanho;
     private String status;
@@ -25,20 +19,18 @@ public class Quarto {
     private String vista;
     private String comodidades;
     private String descricao;
+
+    @ManyToOne
+    @JoinColumn(name = "hotel_id")
+    //@JsonBackReference
+    private Hotel hotel;
+
     public Long getId() {
         return id;
     }
 
     public void setId(Long id) {
         this.id = id;
-    }
-
-    public Hotel getHotel() {
-        return hotel;
-    }
-
-    public void setHotel(Hotel hotel) {
-        this.hotel = hotel;
     }
 
     public double getTamanho() {
@@ -111,5 +103,13 @@ public class Quarto {
 
     public void setDescricao(String descricao) {
         this.descricao = descricao;
+    }
+
+    public Hotel getHotel() {
+        return hotel;
+    }
+
+    public void setHotel(Hotel hotel) {
+        this.hotel = hotel;
     }
 }

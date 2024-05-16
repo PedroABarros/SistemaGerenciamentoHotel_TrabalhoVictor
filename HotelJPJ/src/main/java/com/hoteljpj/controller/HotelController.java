@@ -49,18 +49,17 @@ public class HotelController {
         }
     }
 
-    @PutMapping("/{id}")
-    public ResponseEntity<Hotel> edit(@PathVariable Long id, @RequestBody Hotel hotel) {
+    @PutMapping
+    public ResponseEntity<Hotel> edit( @RequestBody Hotel hotel) {
         try {
-            if (!hotelRepository.existsById(id)) {
-                return ResponseEntity.notFound().build();
-            }
 
-            hotel.setId(id);
             Hotel updated = hotelService.save(hotel);
             return ResponseEntity.ok(updated);
+
         } catch (Exception e) {
+
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
+
         }
     }
 

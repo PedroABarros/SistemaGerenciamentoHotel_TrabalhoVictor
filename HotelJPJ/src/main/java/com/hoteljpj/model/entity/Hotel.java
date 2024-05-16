@@ -1,5 +1,6 @@
 package com.hoteljpj.model.entity;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import org.springframework.format.annotation.DateTimeFormat;
@@ -23,7 +24,7 @@ public class Hotel {
     private Integer classificacao;
 
     @OneToMany(mappedBy = "hotel", cascade = CascadeType.ALL, orphanRemoval = true)
-    @JsonManagedReference
+    @JsonBackReference
     private List<Quarto> qtdQuartos;
 
     @DateTimeFormat(pattern = "dd/MM/yyyy")
