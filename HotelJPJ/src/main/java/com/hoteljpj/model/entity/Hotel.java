@@ -16,19 +16,19 @@ public class Hotel {
     private Long id;
     private String nome;
     private String endereco;
+    private Integer classificacao;
+    @DateTimeFormat(pattern = "dd/MM/yyyy")
+    private Date dataFundacao;
     private Boolean wifi;
     private Boolean estacionamento;
     private Boolean cafe;
     private Boolean almoco;
     private Boolean janta;
-    private Integer classificacao;
 
     @OneToMany(mappedBy = "hotel", cascade = CascadeType.ALL, orphanRemoval = true)
     @JsonBackReference
     private List<Quarto> qtdQuartos;
 
-    @DateTimeFormat(pattern = "dd/MM/yyyy")
-    private Date dataFundacao;
 
 
     public Date getDataFundacao() {

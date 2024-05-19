@@ -36,41 +36,42 @@ public class HotelService {
     }
 
     public Hotel save(@NotNull Hotel hotel) throws Exception {
-        if (hotel.getClassificacao() == null || hotel.getClassificacao() > 5 || hotel.getClassificacao() < 0) {
-            throw new Exception("Classificação não pode ser menor que 0 ou maior que 5");
-        }
         if (hotel.getNome() == null || hotel.getNome().length() < 3) {
             throw new Exception("Nome deve ter pelo menos 3 caracteres.");
-        } else if (hotelRepository.existsByNome(hotel.getNome())) {
+
+        }
+        // nome
+// !quartoRepository.findByIdentificacaoAndHotelId(quarto.getIdentificacao(), quarto.getHotel().getId()).getId().equals(quarto.getId())
+
+        // nome - id
+        if (hotelRepository.existsByNome(hotel.getNome()) && !hotelRepository.findByNomeAndId(hotel.getNome(), hotel.getId()).getId().equals(hotel.getId())) {
             throw new IllegalArgumentException("O nome do hotel deve ser único");
         }
 
+        //DATA
         Date hoje = new Date();
         if (!hotel.getDataFundacao().before(hoje)) {
             throw new IllegalStateException("A DataFundacao do Hotel não pode ser maior que a data do dia do cadastro");
         }
+        //CLASSIFICAÇÃO
+        if (hotel.getClassificacao() == null || hotel.getClassificacao() > 5 || hotel.getClassificacao() < 0) {
+            throw new Exception("Classificação não pode ser menor que 0 ou maior que 5");
+        }
+        //CAFE
         if (hotel.getCafe() == null) {
             throw new Exception("Cafe do Hotel não pode ser nulo.");
         }
+        //ALMOCO
         if (hotel.getAlmoco() == null) {
             throw new Exception("Almoco do Hotel não pode ser nulo.");
         }
+        //JANTA
         if (hotel.getJanta() == null) {
             throw new Exception("Janta do Hotel não pode ser nula.");
         }
 
-        if (hotel.getId() != null) {
+        return hotelRepository.save(hotel);
 
-            Optional<Hotel> existingHotel = hotelRepository.findById(hotel.getId());
-
-            if (!existingHotel.isPresent()) {
-                throw new Exception("Hotel não encontrado para atualização.");
-            }
-
-            return hotelRepository.save(hotel);
-        } else {
-            return hotelRepository.save(hotel);
-        }
     }
 
 
