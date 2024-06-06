@@ -8,9 +8,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
-import java.util.Optional;
-
 @RestController
 @RequestMapping("/api/hotel")
 public class HotelController {
@@ -50,7 +47,7 @@ public class HotelController {
     }
 
     @PutMapping
-    public ResponseEntity<Hotel> edit( @RequestBody Hotel hotel) {
+    public ResponseEntity edit(@RequestBody Hotel hotel) {
         try {
 
             Hotel updated = hotelService.save(hotel);
@@ -58,7 +55,7 @@ public class HotelController {
 
         } catch (Exception e) {
 
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
 
         }
     }

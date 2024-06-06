@@ -33,7 +33,6 @@ public class QuartoController {
         }
     }
 
-
     @PutMapping
     public ResponseEntity<String> editar(@RequestBody Quarto id) {
         try {
@@ -68,6 +67,10 @@ public class QuartoController {
         } catch (Exception e) {
             return new ResponseEntity(e.getMessage(), HttpStatus.NOT_FOUND);
         }
+    }
+    @GetMapping("/total")
+    public Long getTotal() {
+        return quartoRepository.count();
     }
 
 }

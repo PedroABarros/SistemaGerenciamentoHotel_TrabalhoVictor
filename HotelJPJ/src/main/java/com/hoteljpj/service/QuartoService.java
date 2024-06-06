@@ -56,9 +56,7 @@ public class QuartoService {
         // identificação no Hotel
         if (quartoRepository.findByIdentificacaoAndHotelId(quarto.getIdentificacao(), quarto.getHotel().getId()) != null
                 && !quartoRepository.findByIdentificacaoAndHotelId(quarto.getIdentificacao(), quarto.getHotel().getId()).getId().equals(quarto.getId())) {
-
             throw new IllegalArgumentException("O HOTEL já possui um quarto com essa IDENTIFICAÇÃO");
-
         }
         // vista
         if (quarto.getVista() == null || quarto.getVista().trim().isEmpty()) {
