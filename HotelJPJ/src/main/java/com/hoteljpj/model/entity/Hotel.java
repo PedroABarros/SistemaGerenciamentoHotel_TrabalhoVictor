@@ -1,6 +1,5 @@
 package com.hoteljpj.model.entity;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import org.springframework.format.annotation.DateTimeFormat;
@@ -25,26 +24,15 @@ public class Hotel {
     private Boolean almoco;
     private Boolean janta;
 
-    @OneToMany(mappedBy = "hotel", cascade = CascadeType.ALL, orphanRemoval = true)
-    @JsonBackReference
-    private List<Quarto> qtdQuartos;
 
+    // Getters e Setters
 
-
-    public Date getDataFundacao() {
-        return dataFundacao;
-    }
-
-    public void setDataFundacao(Date dataFundacao) {
-        this.dataFundacao = dataFundacao;
+    public Long getId() {
+        return id;
     }
 
     public void setId(Long id) {
         this.id = id;
-    }
-
-    public Long getId() {
-        return id;
     }
 
     public String getNome() {
@@ -61,6 +49,22 @@ public class Hotel {
 
     public void setEndereco(String endereco) {
         this.endereco = endereco;
+    }
+
+    public Integer getClassificacao() {
+        return classificacao;
+    }
+
+    public void setClassificacao(Integer classificacao) {
+        this.classificacao = classificacao;
+    }
+
+    public Date getDataFundacao() {
+        return dataFundacao;
+    }
+
+    public void setDataFundacao(Date dataFundacao) {
+        this.dataFundacao = dataFundacao;
     }
 
     public Boolean getWifi() {
@@ -103,19 +107,5 @@ public class Hotel {
         this.janta = janta;
     }
 
-    public Integer getClassificacao() {
-        return classificacao;
-    }
 
-    public void setClassificacao(Integer classificacao) {
-        this.classificacao = classificacao;
-    }
-
-    public List<Quarto> getQtdQuartos() {
-        return qtdQuartos;
-    }
-
-    public void setQtdQuartos(List<Quarto> qtdQuartos) {
-        this.qtdQuartos = qtdQuartos;
-    }
 }

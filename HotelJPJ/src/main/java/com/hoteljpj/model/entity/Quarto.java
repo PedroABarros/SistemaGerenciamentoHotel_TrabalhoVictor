@@ -3,9 +3,8 @@ package com.hoteljpj.model.entity;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 
-
 @Entity
-@Table (name = "quarto")
+@Table(name = "quarto")
 public class Quarto {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -22,8 +21,10 @@ public class Quarto {
 
     @ManyToOne
     @JoinColumn(name = "hotel_id")
-    //@JsonBackReference
+    @JsonBackReference
     private Hotel hotel;
+
+    // Getters e Setters
 
     public Long getId() {
         return id;
@@ -33,20 +34,20 @@ public class Quarto {
         this.id = id;
     }
 
+    public String getIdentificacao() {
+        return identificacao;
+    }
+
+    public void setIdentificacao(String identificacao) {
+        this.identificacao = identificacao;
+    }
+
     public double getTamanho() {
         return tamanho;
     }
 
     public void setTamanho(double tamanho) {
         this.tamanho = tamanho;
-    }
-
-    public String getIdentificacao() {
-        return identificacao;
-    }
-
-    public void setIdentificacao(String indentificacao) {
-        this.identificacao = indentificacao;
     }
 
     public String getStatus() {
